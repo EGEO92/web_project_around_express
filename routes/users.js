@@ -1,35 +1,22 @@
 import express from "express";
-import fs from "fs";
+import {
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  updateAvatar,
+} from "../controllers/users.js";
 
 const router = express.Router();
 
-router.get("/", function (req, res) {
-  fs.readFile("./data/users.json", (err, data) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    const users = JSON.parse(data.toString("utf-8"));
-    res.send(users);
-  });
-});
+router.get("/", getUsers);
 
-router.get("/:id", function (req, res) {
-  fs.readFile("./data/users.json", (err, data) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    const users = JSON.parse(data.toString("utf-8"));
+router.get("/:_id", getUserById);
 
-    users.forEach((user) => {
-      if (user._id === req.params.id) {
-        res.send(`Usuario: ${user.name}`);
-        return;
-      }
-    });
-    res.send(`ERROR 404 --- Usuario inexistente`);
-  });
-});
+router.post("/", createUser);
+
+router.patch("/me", updateUser);
+
+router.patch("/me/avatar", updateAvatar);
 
 export default router;

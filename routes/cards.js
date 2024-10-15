@@ -1,17 +1,22 @@
 import express from "express";
-import fs from "fs";
+import {
+  getCards,
+  createCard,
+  deleteCardById,
+  giveLikes,
+  deleteLikes,
+} from "../controllers/cards.js";
 
 const router = express.Router();
 
-router.get("/", function (req, res) {
-  fs.readFile("./data/cards.json", (err, data) => {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    const cards = JSON.parse(data.toString("utf-8"));
-    res.send(cards);
-  });
-});
+router.get("/", getCards);
+
+router.post("/", createCard);
+
+router.delete("/:_id", deleteCardById);
+
+router.put("/:_id/likes", giveLikes);
+
+router.delete("/:_id/likes", deleteLikes);
 
 export default router;
