@@ -2,8 +2,8 @@ import Card from "../models/card.js";
 
 export async function getCards(req, res) {
   try {
-    const cards = await Card.find({}).populate("owner").OrFail();
-    res.send(cards);
+    const cards = await Card.find({}).populate("owner").orFail();
+    return res.send(cards);
   } catch (err) {
     res.status(500).send({ message: "Ups, nuestro error...^$%%76" });
   }
@@ -84,17 +84,17 @@ export async function deleteLikes(req, res) {
     Card.findByIdAndUpdate(
       req.params._id,
       { $pull: { likes: req.user._id } },
-      { new: true },
+      { new: true }
     ).orFail();
   } catch (err) {
     if (err.name === "CastError") {
-    return res.status(400).send("No sabemos que paso... otra vez...");
-  }
-  if (err.name === "DocumentNotFound") {
-    return res.status(404).send("Creo que esta carta no existe....");
-  }
-  return res.status(500).send({
-    message: "Error del serv....^#&#*&#@....AAAHHAHAHA....*@#$%^....HELP",
-  });
+      return res.status(400).send("No sabemos que paso... otra vez...");
+    }
+    if (err.name === "DocumentNotFound") {
+      return res.status(404).send("Creo que esta carta no existe....");
+    }
+    return res.status(500).send({
+      message: "Error del serv....^#&#*&#@....AAAHHAHAHA....*@#$%^....HELP",
+    });
   }
 }
